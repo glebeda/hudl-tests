@@ -2,7 +2,6 @@ class PasswordPage < BasePage
 
   text_field(:password, id: 'password')
   button(:continue_button, text: 'Continue')
-  div(:search_bar, data_testid: 'search-bar')
   span(:error_message, id: 'error-element-password')
   link(:edit_username_link, data_link_name: 'edit-username')
 
