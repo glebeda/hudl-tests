@@ -1,0 +1,2 @@
+default: --format pretty --format html --out reports/report.html --publish-quiet 
+parallel: --format pretty --format html --out reports/report.html --format json --out reports/report.json --publish-quiet 
