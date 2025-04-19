@@ -28,7 +28,11 @@ Then(/^I (should|should not) see the (.*) on the ([^\s]*Page)$/) do |verify_type
 end
 
 And(/^I fill ([^\s]+) field on ([^\s]*Page) with (?:the value (.*)|environment variable ([^\s]+))$/) do |field_name, page_name, value, env_var|
-  actual_value = env_var ? ENV[env_var] : value
+  actual_value = if env_var
+                  ENV.fetch(env_var) { raise "Environment variable '#{env_var}' not found!" }
+                 else
+                  value
+                 end
 
   on page_name do |page|
     page.send("fill_#{field_name}!", actual_value)
@@ -47,6 +51,6 @@ Then(/^I (should|should not) see (.*) text in (.*) on the ([^\s]*Page)$/) do |ve
   end
 end
 
-Then /^I should see the ([^\s]+Page)$/ do |page_name|
+Then(/^I should see the ([^\s]+Page)$/) do |page_name|
   wait_until_page_loaded page_name
 end

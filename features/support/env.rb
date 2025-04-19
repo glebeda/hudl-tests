@@ -5,14 +5,19 @@ require 'rspec/expectations'
 require 'selenium-webdriver'
 
 Before do |scenario|
-  browser_name = ENV['BROWSER'] || 'chrome'
-  headless = ENV['HEADLESS'] == 'false'
+  begin
+    browser_name = ENV['BROWSER'] || 'chrome'
+    headless = ENV['HEADLESS'] == 'false'
   
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument('--headless') if headless
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('--headless') if headless
   
-  @browser = Watir::Browser.new :chrome, options: options
-  @browser.window.maximize
+    @browser = Watir::Browser.new browser_name, options: options
+    @browser.window.maximize
+  rescue => e
+    puts "Error initializing browser: #{e.message}"
+    raise e
+  end
 end
 
 After do |scenario|
